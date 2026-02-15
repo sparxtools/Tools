@@ -1,56 +1,272 @@
-<audio id="phonk-track" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
-</audio>
-
-<div id="mute-toggle" onclick="toggleMute()" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; cursor: pointer; font-size: 1.5rem; opacity: 0.5; display: none;">
-    🔊
-</div>
-
-<script>
-    const audio = document.getElementById('phonk-track');
-    const muteBtn = document.getElementById('mute-toggle');
-
-    // Start Website & Music
-    function startApp() {
-        document.getElementById('splash').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-        muteBtn.style.display = 'block';
-        
-        audio.volume = 0.5; // Starts at 50% volume
-        audio.play().catch(e => console.log("Audio play failed: ", e));
-    }
-
-    function toggleMute() {
-        if (audio.muted) {
-            audio.muted = false;
-            muteBtn.innerHTML = "🔊";
-            muteBtn.style.opacity = "1";
-        } else {
-            audio.muted = true;
-            muteBtn.innerHTML = "🔈";
-            muteBtn.style.opacity = "0.5";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPARX TOOLS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05010a;
+            --purple-glow: #7a22ff;
+            --gold: #ffcc00;
+            --diamond: #b9f2ff;
+            --rainbow: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
         }
-    }
 
-    // Star generation logic stays the same as before...
-    const galaxy = document.getElementById('galaxy');
-    for (let i = 0; i < 150; i++) {
-        const star = document.createElement('div');
-        star.className = 'stars';
-        star.style.width = star.style.height = Math.random() * 3 + 'px';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDelay = Math.random() * 40 + 's';
-        galaxy.appendChild(star);
-    }
+        body, html {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            overflow-x: hidden;
+            height: 100%;
+        }
 
-    function showRaid() {
-        document.getElementById('hub-view').style.display = 'none';
-        document.getElementById('raid-view').style.display = 'block';
-    }
+        /* Moving Galaxy Background */
+        .galaxy-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a0b2e 0%, #05010a 100%);
+        }
 
-    function showHub() {
-        document.getElementById('hub-view').style.display = 'flex';
-        document.getElementById('raid-view').style.display = 'none';
-    }
-</script>
+        .stars {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: moveStars 40s linear infinite;
+        }
+
+        @keyframes moveStars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1000px); }
+        }
+
+        /* Splash Screen */
+        #splash {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+        .enter-text {
+            font-size: 1.5rem;
+            letter-spacing: 8px;
+            color: var(--purple-glow);
+            text-shadow: 0 0 15px var(--purple-glow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* Main Content */
+        #main-content { display: none; }
+
+        #hub-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 80px 20px;
+        }
+
+        .main-title {
+            font-size: clamp(2rem, 8vw, 4rem);
+            letter-spacing: 10px;
+            text-shadow: 0 0 20px var(--purple-glow);
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .galaxy-box {
+            background: rgba(122, 34, 255, 0.05);
+            border: 1px solid rgba(122, 34, 255, 0.2);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .galaxy-box:hover {
+            transform: scale(1.05);
+            border-color: var(--purple-glow);
+            box-shadow: 0 0 30px rgba(122, 34, 255, 0.4);
+        }
+
+        /* Raid Bot View */
+        #raid-view { display: none; padding: 40px 20px; }
+
+        .split-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 320px;
+            min-height: 400px;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(15px);
+        }
+
+        .free-card { border: 2px solid; border-image: var(--rainbow) 1; }
+        .free-title { 
+            font-size: 2rem; 
+            background: var(--rainbow); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            font-weight: 900; 
+            margin-bottom: 25px; 
+        }
+
+        .prem-card { border: 2px solid var(--gold); box-shadow: 0 0 40px rgba(255, 204, 0, 0.2); }
+        .prem-title { font-size: 2rem; color: var(--gold); text-shadow: 0 0 15px var(--diamond); text-align: right; font-weight: 900; }
+
+        ul { list-style: none; padding: 0; }
+        li { padding: 12px 0; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        .btn {
+            background: var(--purple-glow);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron';
+            margin-top: 20px;
+        }
+
+        .back-btn { background: none; border: 1px solid var(--purple-glow); color: var(--purple-glow); padding: 10px 20px; cursor: pointer; margin-bottom: 30px; font-family: 'Orbitron'; }
+
+        #mute-btn {
+            position: fixed; bottom: 20px; right: 20px;
+            background: rgba(122, 34, 255, 0.2);
+            border: 1px solid var(--purple-glow);
+            color: white; padding: 10px; border-radius: 50%;
+            cursor: pointer; z-index: 10000; display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash" onclick="startApp()">
+        <div class="enter-text">[ CLICK TO ENTER ]</div>
+    </div>
+
+    <div class="galaxy-bg" id="galaxy"></div>
+
+    <audio id="phonk-track" loop>
+        <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Ketsa/Night_Walk/Ketsa_-_04_-_Night_Walk.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="mute-btn" onclick="toggleMute()">🔊</button>
+
+    <div id="main-content">
+        <div id="hub-view">
+            <h1 class="main-title">SPARX TOOLS</h1>
+            <div class="grid">
+                <div class="galaxy-box">
+                    <h2>FREE MEMBERS</h2>
+                    <p>Automated OAuth2 adding.</p>
+                    <button class="btn">VIEW</button>
+                </div>
+                <div class="galaxy-box" onclick="showRaid()">
+                    <h2>RAID BOT</h2>
+                    <p>Advanced raid terminal.</p>
+                    <button class="btn">VIEW</button>
+                </div>
+                <div class="galaxy-box">
+                    <h2>NUKE BOT</h2>
+                    <p>Complete server wipe.</p>
+                    <button class="btn">VIEW</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="raid-view">
+            <button class="back-btn" onclick="showHub()">← BACK TO HUB</button>
+            <h1 style="text-align: center; letter-spacing: 10px;">RAID TERMINAL</h1>
+            <div class="split-container">
+                <div class="card free-card">
+                    <div class="free-title">Free Features</div>
+                    <ul>
+                        <li>A-raid</li>
+                        <li>Anonymous DM anon dm</li>
+                        <li>Avatar</li>
+                        <li>B-spam</li>
+                        <li>Blame</li>
+                        <li>Ip</li>
+                        <li>Hack</li>
+                    </ul>
+                </div>
+                <div class="card prem-card">
+                    <div class="prem-title">Premium Features</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('phonk-track');
+        const muteBtn = document.getElementById('mute-btn');
+
+        function startApp() {
+            document.getElementById('splash').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            muteBtn.style.display = 'block';
+            audio.play().catch(e => console.log("Audio failed"));
+        }
+
+        function toggleMute() {
+            audio.muted = !audio.muted;
+            muteBtn.innerHTML = audio.muted ? "🔈" : "🔊";
+        }
+
+        // Generate Stars
+        const galaxy = document.getElementById('galaxy');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'stars';
+            const size = Math.random() * 3 + 'px';
+            star.style.width = size;
+            star.style.height = size;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 40 + 's';
+            galaxy.appendChild(star);
+        }
+
+        function showRaid() {
+            document.getElementById('hub-view').style.display = 'none';
+            document.getElementById('raid-view').style.display = 'block';
+        }
+
+        function showHub() {
+            document.getElementById('hub-view').style.display = 'flex';
+            document.getElementById('raid-view').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

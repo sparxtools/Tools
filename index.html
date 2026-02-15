@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,44 +13,42 @@
             --rainbow: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
         }
 
+        /* --- PERMANENT GALAXY THEME --- */
         body, html {
-            margin: 0;
-            padding: 0;
-            background: var(--bg);
+            margin: 0; padding: 0;
+            background-color: var(--bg);
             color: white;
             font-family: 'Orbitron', sans-serif;
-            overflow-x: hidden;
-            height: 100%;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        /* Moving Purple Galaxy Background */
-        .galaxy-bg {
+        #galaxy-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             z-index: -1;
-            background: radial-gradient(circle at center, #1a0b2e 0%, #05010a 100%);
-            overflow: hidden;
         }
 
         .star {
             position: absolute;
             background: white;
             border-radius: 50%;
-            opacity: 0.8;
-            filter: drop-shadow(0 0 5px var(--purple));
-            animation: moveUp 30s linear infinite;
+            opacity: 0.5;
+            box-shadow: 0 0 10px var(--purple);
+            animation: fly 20s linear infinite;
         }
 
-        @keyframes moveUp {
-            from { transform: translateY(100vh); }
-            to { transform: translateY(-100px); }
+        @keyframes fly {
+            from { transform: translateY(100vh); opacity: 1; }
+            to { transform: translateY(-10vh); opacity: 0; }
         }
 
-        /* Splash Screen */
+        /* --- SPLASH SCREEN --- */
         #splash {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
+            background: black;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -59,141 +56,79 @@
             cursor: pointer;
         }
 
-        .enter-text {
-            font-size: 1.5rem;
+        .enter-btn {
+            font-size: 2rem;
             letter-spacing: 10px;
             color: var(--purple);
-            text-shadow: 0 0 15px var(--purple);
-            animation: pulse 1.5s infinite;
+            text-shadow: 0 0 20px var(--purple);
+            border: 2px solid var(--purple);
+            padding: 20px 40px;
+            transition: 0.3s;
         }
 
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+        .enter-btn:hover { background: var(--purple); color: white; }
 
-        /* Content Layout */
-        #main-content { display: none; }
+        /* --- MAIN UI --- */
+        #main-ui { display: none; padding: 40px; text-align: center; }
 
-        #hub-view {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 60px 20px;
-        }
-
-        .main-title {
-            font-size: clamp(2.5rem, 10vw, 4.5rem);
-            letter-spacing: 15px;
-            text-shadow: 0 0 30px var(--purple);
-            margin-bottom: 50px;
-        }
+        .main-title { font-size: 4rem; margin-bottom: 50px; text-shadow: 0 0 20px var(--purple); }
 
         .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            width: 100%;
-            max-width: 1100px;
+            display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;
         }
 
-        .galaxy-box {
-            background: rgba(122, 34, 255, 0.08);
+        .box {
+            background: rgba(122, 34, 255, 0.1);
             border: 1px solid var(--purple);
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            backdrop-filter: blur(8px);
-            transition: 0.4s;
+            padding: 40px; border-radius: 15px; width: 280px;
+            backdrop-filter: blur(10px); transition: 0.3s;
         }
 
-        .galaxy-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 40px rgba(122, 34, 255, 0.5);
-        }
+        .box:hover { transform: translateY(-10px); box-shadow: 0 0 30px var(--purple); }
 
-        /* Raid Page */
-        #raid-view { display: none; padding: 40px 20px; }
+        /* --- RAID VIEW --- */
+        #raid-view { display: none; }
+        .split { display: flex; gap: 20px; justify-content: center; margin-top: 30px; }
+        .card { width: 45%; padding: 30px; border-radius: 20px; background: rgba(0,0,0,0.8); }
+        .free { border: 2px solid #ff0000; } /* Rainbow border fallback */
+        .prem { border: 2px solid var(--gold); }
         
-        .split-container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 40px auto;
-            flex-wrap: wrap;
-        }
+        .rainbow-text { background: var(--rainbow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; font-size: 1.5rem; }
+        .gold-text { color: var(--gold); text-shadow: 0 0 10px var(--gold); font-size: 1.5rem; }
 
-        .card {
-            flex: 1;
-            min-width: 320px;
-            padding: 40px;
-            border-radius: 25px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(15px);
-        }
+        ul { list-style: none; padding: 0; text-align: left; }
+        li { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
 
-        .free-card { border: 2px solid; border-image: var(--rainbow) 1; }
-        .free-title { font-size: 2rem; background: var(--rainbow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; margin-bottom: 20px; }
-
-        .prem-card { border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(255, 204, 0, 0.3); }
-        .prem-title { font-size: 2rem; color: var(--gold); text-align: right; font-weight: 900; }
-
-        ul { list-style: none; padding: 0; }
-        li { padding: 12px 0; font-size: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-        .btn {
-            background: var(--purple);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Orbitron';
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        .back-btn { background: none; border: 1px solid var(--purple); color: white; padding: 10px 20px; cursor: pointer; margin-bottom: 20px; font-family: 'Orbitron'; }
     </style>
 </head>
 <body>
 
-    <div id="splash" onclick="startApp()">
-        <div class="enter-text">[ CLICK TO ENTER ]</div>
+    <div id="splash" onclick="unlockSite()">
+        <div class="enter-btn">CLICK TO ENTER</div>
     </div>
 
-    <div class="galaxy-bg" id="galaxy"></div>
+    <div id="galaxy-container"></div>
 
-    <audio id="audio-track" loop>
-        <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_5c1ba38598.mp3" type="audio/mpeg">
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/audio/2023/05/08/audio_6e665d9d73.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="main-content">
-        <div id="hub-view">
-            <h1 class="main-title">SPARX TOOLS</h1>
+    <div id="main-ui">
+        <h1 class="main-title">SPARX TOOLS</h1>
+        
+        <div id="hub">
             <div class="grid">
-                <div class="galaxy-box">
-                    <h2>MEMBERS</h2>
-                    <p>Automated adding.</p>
-                    <button class="btn">VIEW</button>
-                </div>
-                <div class="galaxy-box" onclick="showRaid()">
-                    <h2>RAID BOT</h2>
-                    <p>Advanced terminal.</p>
-                    <button class="btn">VIEW</button>
-                </div>
-                <div class="galaxy-box">
-                    <h2>NUKE BOT</h2>
-                    <p>Server wipe tool.</p>
-                    <button class="btn">VIEW</button>
-                </div>
+                <div class="box"><h3>MEMBERS</h3><button onclick="alert('Coming Soon')">VIEW</button></div>
+                <div class="box" onclick="showRaid()"><h3>RAID BOT</h3><button>VIEW</button></div>
+                <div class="box"><h3>NUKE BOT</h3><button onclick="alert('Coming Soon')">VIEW</button></div>
             </div>
         </div>
 
         <div id="raid-view">
-            <button class="back-btn" onclick="showHub()">← BACK</button>
-            <h1 style="text-align: center; letter-spacing: 8px;">RAID TERMINAL</h1>
-            <div class="split-container">
-                <div class="card free-card">
-                    <div class="free-title">Free Features</div>
+            <button onclick="showHub()" style="background:none; color:white; border:1px solid; padding:5px 15px; cursor:pointer;">BACK</button>
+            <div class="split">
+                <div class="card free">
+                    <div class="rainbow-text">Free Features</div>
                     <ul>
                         <li>A-raid</li>
                         <li>Anonymous DM anon dm</li>
@@ -204,44 +139,45 @@
                         <li>Hack</li>
                     </ul>
                 </div>
-                <div class="card prem-card">
-                    <div class="prem-title">Premium Features</div>
+                <div class="card prem">
+                    <div class="gold-text">Premium Features</div>
+                    <p style="margin-top:20px; color:#555;">Locked Content</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function startApp() {
+        // Start Sound and Show UI
+        function unlockSite() {
             document.getElementById('splash').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-            const audio = document.getElementById('audio-track');
-            audio.volume = 0.4;
-            audio.play().catch(e => console.log("Audio Error:", e));
+            document.getElementById('main-ui').style.display = 'block';
+            const music = document.getElementById('bg-music');
+            music.volume = 0.5;
+            music.play();
         }
 
-        // Better Galaxy Animation
-        const galaxy = document.getElementById('galaxy');
-        for (let i = 0; i < 80; i++) {
+        // Generate Stars
+        const container = document.getElementById('galaxy-container');
+        for (let i = 0; i < 100; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            const size = Math.random() * 3 + 1 + 'px';
+            const size = Math.random() * 3 + 'px';
             star.style.width = size;
             star.style.height = size;
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
-            star.style.animationDuration = (Math.random() * 20 + 10) + 's';
-            star.style.animationDelay = (Math.random() * 10) + 's';
-            galaxy.appendChild(star);
+            star.style.animationDuration = (Math.random() * 10 + 5) + 's';
+            container.appendChild(star);
         }
 
         function showRaid() {
-            document.getElementById('hub-view').style.display = 'none';
+            document.getElementById('hub').style.display = 'none';
             document.getElementById('raid-view').style.display = 'block';
         }
 
         function showHub() {
-            document.getElementById('hub-view').style.display = 'flex';
+            document.getElementById('hub').style.display = 'block';
             document.getElementById('raid-view').style.display = 'none';
         }
     </script>

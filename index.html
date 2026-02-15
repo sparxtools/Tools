@@ -1,251 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPARX TOOLS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
-    <style>
-        body, html {
-            margin: 0; padding: 0;
-            background-color: #0a0015;
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            height: 100vh;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sparx Tools</title>
 
-        /* --- ENHANCED GALAXY BACKGROUND --- */
-        .galaxy-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(ellipse at bottom, #1b0033 0%, #05010a 100%);
-            z-index: -3;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Pacifico&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
-        /* More stars with different sizes & colors */
-        .stars-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 200%;
-            background: transparent;
-            box-shadow: 
-                15vw 15vh #fff 1px, 25vw 35vh #fff 1px, 35vw 25vh #e0d0ff 1px,
-                45vw 75vh #fff 2px, 55vw 45vh #c8aaff 1px, 65vw 15vh #fff 1px,
-                75vw 85vh #a050ff 2px, 85vw 35vh #fff 1px, 95vw 65vh #7a22ff 1px,
-                10vw 80vh #ff99ff 1px, 30vw 60vh #b266ff 2px, 50vw 90vh #9933ff 1px;
-            animation: drift-stars 120s linear infinite;
-            opacity: 0.9;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-        @keyframes drift-stars {
-            from { transform: translateY(0); }
-            to   { transform: translateY(-50%); }
-        }
+body{
+font-family:'Poppins',sans-serif;
+background:#0d0b1f;
+color:white;
+overflow-x:hidden;
+}
 
-        /* Multiple drifting nebulae */
-        .nebula {
-            position: absolute;
-            width: 800px; height: 800px;
-            background: radial-gradient(circle, rgba(122, 34, 255, 0.25) 10%, rgba(80, 0, 200, 0.15) 40%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: -2;
-            animation: nebula-drift 40s ease-in-out infinite alternate;
-        }
+/* Purple Galaxy Background */
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 20% 30%, #7b2fff55, transparent 40%),
+radial-gradient(circle at 80% 20%, #b84dff55, transparent 40%),
+radial-gradient(circle at 40% 80%, #5f00ff55, transparent 40%);
+animation: galaxyMove 30s linear infinite;
+z-index:-2;
+}
 
-        .nebula:nth-child(2) {
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(200, 80, 255, 0.2) 0%, transparent 70%);
-            animation: nebula-drift 60s ease-in-out infinite alternate-reverse;
-            top: 40%; left: 70%;
-        }
+@keyframes galaxyMove{
+0%{transform:translate(0,0);}
+50%{transform:translate(-80px,-40px);}
+100%{transform:translate(0,0);}
+}
 
-        @keyframes nebula-drift {
-            0%   { transform: translate(0, 0) rotate(0deg); opacity: 0.6; }
-            100% { transform: translate(30vw, 20vh) rotate(15deg); opacity: 0.9; }
-        }
+/* Moving Stars */
+.stars{
+position:fixed;
+width:200%;
+height:200%;
+background-image:radial-gradient(white 1px, transparent 1px);
+background-size:50px 50px;
+opacity:0.25;
+animation: starMove 120s linear infinite;
+z-index:-1;
+}
 
-        /* Shooting star effect */
-        .shooting-star {
-            position: absolute;
-            width: 3px; height: 60px;
-            background: linear-gradient(to bottom, transparent, #ffccff, #ffffff);
-            border-radius: 50%;
-            filter: blur(2px);
-            animation: shoot 8s linear infinite;
-            opacity: 0;
-        }
+@keyframes starMove{
+from{transform:translate(0,0);}
+to{transform:translate(-500px,-500px);}
+}
 
-        @keyframes shoot {
-            0%   { transform: translateX(-10vw) translateY(-10vh) rotate(45deg); opacity: 0; }
-            10%  { opacity: 0.9; }
-            90%  { opacity: 0.9; }
-            100% { transform: translateX(110vw) translateY(110vh) rotate(45deg); opacity: 0; }
-        }
+/* Navbar */
+.nav{
+text-align:center;
+padding:20px;
+font-family:'Orbitron',sans-serif;
+font-size:24px;
+letter-spacing:2px;
+backdrop-filter:blur(10px);
+background:rgba(0,0,0,0.3);
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
 
-        /* --- SPLASH SCREEN --- */
-        #splash {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            cursor: pointer;
-        }
+/* Layout */
+.container{
+max-width:1200px;
+margin:auto;
+padding:60px 20px;
+text-align:center;
+}
 
-        .enter-btn {
-            font-size: 2rem;
-            letter-spacing: 8px;
-            color: #9d4fff;
-            text-shadow: 0 0 25px #9d4fff, 0 0 40px #7a22ff;
-            border: 3px solid #9d4fff;
-            padding: 25px 60px;
-            background: transparent;
-            border-radius: 12px;
-            transition: all 0.4s;
-        }
+.title{
+font-family:'Orbitron',sans-serif;
+font-size:60px;
+margin-bottom:40px;
+background:linear-gradient(45deg,#c77dff,#9d4edd,#7b2fff);
+-webkit-background-clip:text;
+color:transparent;
+}
 
-        .enter-btn:hover {
-            box-shadow: 0 0 40px #9d4fff;
-            transform: scale(1.08);
-        }
+/* Tool Buttons */
+.tools{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+margin-bottom:40px;
+}
 
-        /* --- MAIN UI --- */
-        #main-ui { display: none; text-align: center; padding-top: 8vh; }
-        .grid { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 60px; }
-        .box {
-            background: rgba(122, 34, 255, 0.12);
-            border: 2px solid #9d4fff;
-            padding: 35px; border-radius: 20px; width: 280px;
-            backdrop-filter: blur(12px);
-            transition: all 0.3s;
-            cursor: pointer;
-        }
+.tool-btn{
+padding:16px 30px;
+border:none;
+border-radius:15px;
+cursor:pointer;
+font-size:17px;
+background:linear-gradient(45deg,#7b2fff,#c77dff);
+color:white;
+transition:0.3s;
+box-shadow:0 0 15px #7b2fff88;
+}
 
-        .box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 30px rgba(157, 79, 255, 0.5);
-        }
+.tool-btn:hover{
+transform:translateY(-5px) scale(1.08);
+box-shadow:0 0 30px #c77dff;
+}
 
-        .rainbow-text {
-            background: linear-gradient(90deg, #ff0066, #ffcc00, #33ff99, #00ccff, #9933ff, #ff3399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-            font-size: 1.4rem;
-        }
+/* RAID PANEL */
+#raidPanel{
+display:none;
+margin-top:40px;
+animation:fadeIn 0.6s ease forwards;
+}
 
-        .gold-text { 
-            color: #ffd700; 
-            text-shadow: 0 0 15px #ffd700, 0 0 25px #ffaa00; 
-            font-weight: bold; 
-            font-size: 1.4rem;
-        }
-        
-        #raid-view { display: none; margin-top: 30px; }
-        .card { 
-            background: rgba(10, 5, 30, 0.85); 
-            padding: 25px; 
-            border-radius: 18px; 
-            width: 380px; 
-            border: 2px solid; 
-            backdrop-filter: blur(8px);
-        }
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
 
-        .highlight-note {
-            color: #aaffff;
-            font-weight: bold;
-            text-shadow: 0 0 10px #00ffff;
-            margin: 15px 0;
-            font-size: 1.1rem;
-        }
-    </style>
+.panel-title{
+font-family:'Orbitron',sans-serif;
+font-size:34px;
+margin-bottom:30px;
+}
+
+/* Feature Grid */
+.panel{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:40px;
+}
+
+/* COOL BOX STYLE */
+.card{
+padding:45px;
+border-radius:25px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.15);
+box-shadow:0 0 40px rgba(123,47,255,0.3);
+transition:0.3s;
+position:relative;
+overflow:hidden;
+}
+
+.card:hover{
+transform:scale(1.03);
+box-shadow:0 0 60px rgba(199,125,255,0.6);
+}
+
+/* FREE SIDE */
+.free h2{
+font-family:'Pacifico',cursive;
+font-size:36px;
+margin-bottom:20px;
+animation:flash 2s infinite alternate;
+}
+
+@keyframes flash{
+from{color:#c77dff;}
+to{color:#ffffff;}
+}
+
+.free ul{
+list-style:none;
+line-height:36px;
+font-size:16px;
+}
+
+/* PREMIUM SIDE */
+.premium::before{
+content:"";
+position:absolute;
+top:-4px;left:-4px;right:-4px;bottom:-4px;
+border-radius:30px;
+background:linear-gradient(45deg,gold,#00e5ff,gold);
+background-size:300% 300%;
+animation:aura 6s linear infinite;
+z-index:-1;
+}
+
+@keyframes aura{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.premium h2{
+font-family:'Pacifico',cursive;
+font-size:36px;
+color:gold;
+text-shadow:0 0 20px gold;
+margin-bottom:20px;
+}
+
+.blank{
+opacity:0.4;
+font-style:italic;
+}
+
+/* Responsive */
+@media(max-width:900px){
+.panel{
+grid-template-columns:1fr;
+}
+.title{
+font-size:42px;
+}
+}
+</style>
 </head>
+
 <body>
 
-    <div id="splash" onclick="unlock()">
-        <div class="enter-btn">CLICK TO ENTER</div>
-        <p style="color: #555; margin-top: 25px; font-size: 1.2rem;">[ Cosmic Audio & Galaxy Awakening ]</p>
-    </div>
+<div class="stars"></div>
 
-    <div class="galaxy-bg">
-        <div class="stars-overlay"></div>
-        <div class="nebula"></div>
-        <div class="nebula"></div>
-        <div class="shooting-star" style="top:10%; left:-5%; animation-delay:0s;"></div>
-        <div class="shooting-star" style="top:30%; left:-10%; animation-delay:3s;"></div>
-        <div class="shooting-star" style="top:60%; left:-8%; animation-delay:6s;"></div>
-    </div>
+<div class="nav">⚡ Sparx Tools</div>
 
-    <audio id="phonk" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
-    </audio>
+<div class="container">
 
-    <div id="main-ui">
-        <h1 style="letter-spacing: 18px; text-shadow: 0 0 30px #9d4fff, 0 0 50px #7a22ff;">SPARX TOOLS</h1>
-        
-        <div id="hub">
-            <div class="grid">
-                <div class="box"><h3>MEMBERS</h3><button onclick="alert('Locked')">VIEW</button></div>
-                <div class="box" onclick="showRaid()"><h3>RAID BOT</h3><button>VIEW</button></div>
-                <div class="box"><h3>NUKE BOT</h3><button onclick="alert('Locked')">VIEW</button></div>
-            </div>
-        </div>
+<div class="title">Sparx Tools</div>
 
-        <div id="raid-view">
-            <button onclick="showHub()" style="background:none; color:#aaffff; border:2px solid #9d4fff; padding:12px 30px; cursor:pointer; margin-bottom: 30px; border-radius:10px; font-size:1.1rem; text-shadow:0 0 10px #00ffff;">← BACK TO HUB</button>
-            
-            <div class="grid">
-                <div class="card" style="border-color: #ff3366;">
-                    <div class="rainbow-text">RAID BOT</div>
-                    <div class="highlight-note">Bot doesn't have to be in server!<br>Just add it to your apps!!</div>
-                    <ul style="text-align: left; list-style: none; padding-left: 0; line-height: 2;">
-                        <li>→ A-raid</li>
-                        <li>→ Anonymous DM / anon dm</li>
-                        <li>→ Avatar</li>
-                        <li>→ B-spam</li>
-                        <li>→ Blame</li>
-                        <li>→ Ip</li>
-                        <li>→ Hack</li>
-                    </ul>
-                    <p style="color:#88ffdd; margin-top:20px; font-size:0.9rem;">User-installed app — works anywhere via your Discord apps!</p>
-                </div>
+<div class="tools">
+<button class="tool-btn" onclick="showRaid()">Raid Bot</button>
+<button class="tool-btn">Mass DM</button>
+<button class="tool-btn">Free Members Bot</button>
+</div>
 
-                <div class="card" style="border-color: #ffd700;">
-                    <div class="gold-text">PREMIUM FEATURES</div>
-                    <p style="color: #aaa; margin-top: 30px;">Coming Soon...</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="raidPanel">
+<div class="panel-title">RAIDBOT FEATURES</div>
 
-    <script>
-        function unlock() {
-            document.getElementById('splash').style.display = 'none';
-            document.getElementById('main-ui').style.display = 'block';
-            
-            const music = document.getElementById('phonk');
-            music.volume = 0.4;
-            let playPromise = music.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    console.log("Autoplay needs another interaction.");
-                });
-            }
-        }
+<div class="panel">
 
-        function showRaid() {
-            document.getElementById('hub').style.display = 'none';
-            document.getElementById('raid-view').style.display = 'block';
-        }
+<div class="card free">
+<h2>Free</h2>
+<ul>
+<li>Feature A</li>
+<li>Feature B</li>
+<li>Feature C</li>
+<li>Feature D</li>
+<li>Feature E</li>
+<li>Feature F</li>
+<li>Feature G</li>
+</ul>
+</div>
 
-        function showHub() {
-            document.getElementById('hub').style.display = 'block';
-            document.getElementById('raid-view').style.display = 'none';
-        }
-    </script>
+<div class="card premium">
+<h2>Premium</h2>
+<div class="blank">Diamond & Gold Tier — Coming Soon</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<script>
+function showRaid(){
+document.getElementById("raidPanel").style.display="block";
+}
+</script>
+
 </body>
 </html>

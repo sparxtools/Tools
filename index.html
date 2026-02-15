@@ -1,239 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPARX TOOLS</title>
-    <style>
-        :root {
-            --bg: #05010a;
-            --purple-glow: #7a22ff;
-            --gold: #ffcc00;
-            --diamond: #b9f2ff;
-            --rainbow: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+<audio id="phonk-track" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+</audio>
+
+<div id="mute-toggle" onclick="toggleMute()" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; cursor: pointer; font-size: 1.5rem; opacity: 0.5; display: none;">
+    🔊
+</div>
+
+<script>
+    const audio = document.getElementById('phonk-track');
+    const muteBtn = document.getElementById('mute-toggle');
+
+    // Start Website & Music
+    function startApp() {
+        document.getElementById('splash').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        muteBtn.style.display = 'block';
+        
+        audio.volume = 0.5; // Starts at 50% volume
+        audio.play().catch(e => console.log("Audio play failed: ", e));
+    }
+
+    function toggleMute() {
+        if (audio.muted) {
+            audio.muted = false;
+            muteBtn.innerHTML = "🔊";
+            muteBtn.style.opacity = "1";
+        } else {
+            audio.muted = true;
+            muteBtn.innerHTML = "🔈";
+            muteBtn.style.opacity = "0.5";
         }
+    }
 
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
+    // Star generation logic stays the same as before...
+    const galaxy = document.getElementById('galaxy');
+    for (let i = 0; i < 150; i++) {
+        const star = document.createElement('div');
+        star.className = 'stars';
+        star.style.width = star.style.height = Math.random() * 3 + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 40 + 's';
+        galaxy.appendChild(star);
+    }
 
-        /* --- MOVING GALAXY BACKGROUND --- */
-        .galaxy-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at center, #1a0b2e 0%, #05010a 100%);
-        }
+    function showRaid() {
+        document.getElementById('hub-view').style.display = 'none';
+        document.getElementById('raid-view').style.display = 'block';
+    }
 
-        .stars {
-            position: absolute;
-            width: 2px; height: 2px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: moveStars 50s linear infinite;
-        }
-
-        @keyframes moveStars {
-            from { transform: translateY(0); }
-            to { transform: translateY(-1000px); }
-        }
-
-        /* --- HUB VIEW --- */
-        #hub-view {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 80px 20px;
-        }
-
-        .main-title {
-            font-size: 3.5rem;
-            letter-spacing: 12px;
-            color: #fff;
-            text-shadow: 0 0 20px var(--purple-glow);
-            margin-bottom: 60px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
-            width: 100%;
-            max-width: 1100px;
-        }
-
-        .galaxy-box {
-            background: rgba(122, 34, 255, 0.05);
-            border: 1px solid rgba(122, 34, 255, 0.2);
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
-            cursor: pointer;
-        }
-
-        .galaxy-box:hover {
-            transform: scale(1.05);
-            border-color: var(--purple-glow);
-            box-shadow: 0 0 30px rgba(122, 34, 255, 0.4);
-        }
-
-        /* --- RAID VIEW --- */
-        #raid-view {
-            display: none;
-            padding: 60px 20px;
-        }
-
-        .split-container {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            max-width: 1200px;
-            margin: 40px auto;
-        }
-
-        .card {
-            flex: 1;
-            min-height: 400px;
-            padding: 40px;
-            border-radius: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(15px);
-        }
-
-        /* Free Side */
-        .free-card {
-            border: 2px solid;
-            border-image: var(--rainbow) 1;
-        }
-
-        .free-title {
-            font-size: 2.2rem;
-            background: var(--rainbow);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-            margin-bottom: 30px;
-        }
-
-        /* Premium Side */
-        .prem-card {
-            border: 2px solid var(--gold);
-            box-shadow: 0 0 40px rgba(255, 204, 0, 0.2);
-        }
-
-        .prem-title {
-            font-size: 2.2rem;
-            color: var(--gold);
-            text-shadow: 0 0 15px var(--diamond);
-            text-align: right;
-            font-weight: 900;
-        }
-
-        ul { list-style: none; padding: 0; }
-        li { padding: 12px 0; font-size: 1.2rem; color: #eee; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-        .btn {
-            background: var(--purple-glow);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: 'Orbitron';
-            margin-top: 20px;
-        }
-
-        .back-btn {
-            background: none;
-            border: 1px solid var(--purple-glow);
-            color: var(--purple-glow);
-            padding: 10px 20px;
-            cursor: pointer;
-            margin-bottom: 30px;
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <div class="galaxy-bg" id="galaxy"></div>
-
-    <div id="hub-view">
-        <h1 class="main-title">SPARX TOOLS</h1>
-        <div class="grid">
-            <div class="galaxy-box">
-                <h2>FREE MEMBERS</h2>
-                <p>Add OAuth2 members to any server.</p>
-                <button class="btn">VIEW</button>
-            </div>
-            <div class="galaxy-box" onclick="showRaid()">
-                <h2>RAID BOT</h2>
-                <p>Advanced raid and spam utility.</p>
-                <button class="btn">VIEW</button>
-            </div>
-            <div class="galaxy-box">
-                <h2>NUKE BOT</h2>
-                <p>The ultimate server sanitization tool.</p>
-                <button class="btn">VIEW</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="raid-view">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <button class="back-btn" onclick="showHub()">← BACK TO HUB</button>
-            <h1 style="text-align: center; letter-spacing: 10px; text-shadow: 0 0 20px var(--purple-glow);">RAID TERMINAL</h1>
-            
-            <div class="split-container">
-                <div class="card free-card">
-                    <div class="free-title">Free Features</div>
-                    <ul>
-                        <li>A-raid</li>
-                        <li>Anonymous DM anon dm</li>
-                        <li>Avatar</li>
-                        <li>B-spam different styles</li>
-                        <li>Blame</li>
-                        <li>Ip fake</li>
-                        <li>Hack fake</li>
-                    </ul>
-                </div>
-
-                <div class="card prem-card">
-                    <div class="prem-title">Premium Features</div>
-                    </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Star generation
-        const galaxy = document.getElementById('galaxy');
-        for (let i = 0; i < 150; i++) {
-            const star = document.createElement('div');
-            star.className = 'stars';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.animationDelay = Math.random() * 50 + 's';
-            galaxy.appendChild(star);
-        }
-
-        function showRaid() {
-            document.getElementById('hub-view').style.display = 'none';
-            document.getElementById('raid-view').style.display = 'block';
-        }
-
-        function showHub() {
-            document.getElementById('hub-view').style.display = 'flex';
-            document.getElementById('raid-view').style.display = 'none';
-        }
-    </script>
-</body>
-</html>
+    function showHub() {
+        document.getElementById('hub-view').style.display = 'flex';
+        document.getElementById('raid-view').style.display = 'none';
+    }
+</script>

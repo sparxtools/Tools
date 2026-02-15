@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -11,12 +12,12 @@
 
 body{
 font-family:'Poppins',sans-serif;
-background:#070816;
+background:#0b0f2a;
 color:white;
 overflow-x:hidden;
 }
 
-/* Galaxy animated glow */
+/* Galaxy glow background */
 body::before{
 content:"";
 position:fixed;
@@ -41,9 +42,7 @@ text-align:center;
 padding:20px;
 font-family:'Orbitron',sans-serif;
 font-size:22px;
-letter-spacing:2px;
 border-bottom:1px solid rgba(255,255,255,0.1);
-backdrop-filter:blur(10px);
 }
 
 .container{
@@ -55,36 +54,45 @@ text-align:center;
 
 .title{
 font-family:'Orbitron',sans-serif;
-font-size:60px;
+font-size:55px;
 margin-bottom:30px;
 background:linear-gradient(45deg,#5f5fff,#ff3df5,#00ffe7);
 -webkit-background-clip:text;
 color:transparent;
 }
 
-.open-btn{
-padding:15px 30px;
+/* Tool Buttons */
+.tools{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+margin-bottom:40px;
+}
+
+.tool-btn{
+padding:15px 25px;
 border:none;
 border-radius:12px;
 cursor:pointer;
-font-size:18px;
+font-size:16px;
 background:linear-gradient(45deg,#5f5fff,#a347ff);
 color:white;
 transition:0.3s;
 }
 
-.open-btn:hover{
-transform:scale(1.05);
+.tool-btn:hover{
+transform:scale(1.08);
 box-shadow:0 0 20px rgba(255,255,255,0.6);
 }
 
 /* Feature Panel */
 .panel{
-margin-top:50px;
 display:none;
 grid-template-columns:1fr 1fr;
 gap:40px;
-animation:fadeIn 0.6s ease forwards;
+margin-top:30px;
+animation:fadeIn 0.5s ease forwards;
 }
 
 @keyframes fadeIn{
@@ -92,21 +100,25 @@ from{opacity:0;transform:translateY(20px);}
 to{opacity:1;transform:translateY(0);}
 }
 
-/* Cards */
+.panel-title{
+font-family:'Orbitron',sans-serif;
+font-size:32px;
+margin-bottom:30px;
+}
+
 .card{
 padding:40px;
 border-radius:25px;
+background:rgba(255,255,255,0.08);
 backdrop-filter:blur(15px);
-background:rgba(255,255,255,0.07);
 border:1px solid rgba(255,255,255,0.15);
 position:relative;
-overflow:hidden;
 }
 
-/* Free Side */
+/* Free side */
 .free h2{
 font-family:'Pacifico',cursive;
-font-size:36px;
+font-size:34px;
 margin-bottom:20px;
 animation:flash 2s infinite alternate;
 }
@@ -118,26 +130,19 @@ to{color:#ff3df5;}
 
 .free ul{
 list-style:none;
-font-size:16px;
 line-height:35px;
+font-size:16px;
 }
 
-/* Premium Side */
-.premium{
-position:relative;
-}
-
+/* Premium aura */
 .premium::before{
 content:"";
 position:absolute;
-top:-3px;
-left:-3px;
-right:-3px;
-bottom:-3px;
+top:-3px;left:-3px;right:-3px;bottom:-3px;
 border-radius:30px;
-background:linear-gradient(45deg, gold, #00f7ff, gold);
+background:linear-gradient(45deg,gold,#00f7ff,gold);
 background-size:300% 300%;
-animation: aura 6s linear infinite;
+animation:aura 6s linear infinite;
 z-index:-1;
 }
 
@@ -149,10 +154,10 @@ z-index:-1;
 
 .premium h2{
 font-family:'Pacifico',cursive;
-font-size:36px;
-margin-bottom:20px;
+font-size:34px;
 color:gold;
 text-shadow:0 0 15px gold;
+margin-bottom:20px;
 }
 
 .blank{
@@ -164,7 +169,7 @@ font-style:italic;
 .panel{
 grid-template-columns:1fr;
 }
-.title{font-size:42px;}
+.title{font-size:40px;}
 }
 </style>
 </head>
@@ -177,35 +182,43 @@ grid-template-columns:1fr;
 
 <div class="title">Sparx Tools</div>
 
-<button class="open-btn" onclick="openPanel()">View Features</button>
+<div class="tools">
+<button class="tool-btn" onclick="showRaid()">Raid Bot</button>
+<button class="tool-btn">Mass DM</button>
+<button class="tool-btn">Free Members Bot</button>
+</div>
 
-<div class="panel" id="featurePanel">
+<div id="raidPanel" style="display:none;">
+<div class="panel-title">RAIDBOT FEATURES</div>
+
+<div class="panel">
 
 <div class="card free">
-<h2>Free Features</h2>
+<h2>Free</h2>
 <ul>
-<li>✨ Basic Dashboard Access</li>
-<li>✨ Avatar Preview</li>
-<li>✨ Text Style Preview</li>
-<li>✨ Demo Tool Interface</li>
-<li>✨ Server Info Viewer</li>
+<li>Feature A</li>
+<li>Feature B</li>
+<li>Feature C</li>
+<li>Feature D</li>
+<li>Feature E</li>
+<li>Feature F</li>
+<li>Feature G</li>
 </ul>
 </div>
 
 <div class="card premium">
 <h2>Premium</h2>
-<div class="blank">
-Diamond & Gold Tier — Coming Soon
-</div>
+<div class="blank">Diamond & Gold Tier — Coming Soon</div>
 </div>
 
+</div>
 </div>
 
 </div>
 
 <script>
-function openPanel(){
-document.getElementById("featurePanel").style.display="grid";
+function showRaid(){
+document.getElementById("raidPanel").style.display="block";
 }
 </script>
 

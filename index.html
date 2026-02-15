@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +9,8 @@
     <style>
         :root {
             --bg: #05010a;
-            --purple-glow: #7a22ff;
+            --purple: #7a22ff;
             --gold: #ffcc00;
-            --diamond: #b9f2ff;
             --rainbow: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
         }
 
@@ -24,25 +24,27 @@
             height: 100%;
         }
 
-        /* Moving Galaxy Background */
+        /* Moving Purple Galaxy Background */
         .galaxy-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             background: radial-gradient(circle at center, #1a0b2e 0%, #05010a 100%);
+            overflow: hidden;
         }
 
-        .stars {
+        .star {
             position: absolute;
             background: white;
             border-radius: 50%;
-            opacity: 0.6;
-            animation: moveStars 40s linear infinite;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 5px var(--purple));
+            animation: moveUp 30s linear infinite;
         }
 
-        @keyframes moveStars {
-            from { transform: translateY(0); }
-            to { transform: translateY(-1000px); }
+        @keyframes moveUp {
+            from { transform: translateY(100vh); }
+            to { transform: translateY(-100px); }
         }
 
         /* Splash Screen */
@@ -59,30 +61,29 @@
 
         .enter-text {
             font-size: 1.5rem;
-            letter-spacing: 8px;
-            color: var(--purple-glow);
-            text-shadow: 0 0 15px var(--purple-glow);
-            animation: pulse 2s infinite;
+            letter-spacing: 10px;
+            color: var(--purple);
+            text-shadow: 0 0 15px var(--purple);
+            animation: pulse 1.5s infinite;
         }
 
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 
-        /* Main Content */
+        /* Content Layout */
         #main-content { display: none; }
 
         #hub-view {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 80px 20px;
+            padding: 60px 20px;
         }
 
         .main-title {
-            font-size: clamp(2rem, 8vw, 4rem);
-            letter-spacing: 10px;
-            text-shadow: 0 0 20px var(--purple-glow);
-            margin-bottom: 60px;
-            text-align: center;
+            font-size: clamp(2.5rem, 10vw, 4.5rem);
+            letter-spacing: 15px;
+            text-shadow: 0 0 30px var(--purple);
+            margin-bottom: 50px;
         }
 
         .grid {
@@ -94,24 +95,23 @@
         }
 
         .galaxy-box {
-            background: rgba(122, 34, 255, 0.05);
-            border: 1px solid rgba(122, 34, 255, 0.2);
+            background: rgba(122, 34, 255, 0.08);
+            border: 1px solid var(--purple);
             padding: 40px;
-            border-radius: 15px;
+            border-radius: 20px;
             text-align: center;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
+            backdrop-filter: blur(8px);
+            transition: 0.4s;
         }
 
         .galaxy-box:hover {
-            transform: scale(1.05);
-            border-color: var(--purple-glow);
-            box-shadow: 0 0 30px rgba(122, 34, 255, 0.4);
+            transform: translateY(-10px);
+            box-shadow: 0 0 40px rgba(122, 34, 255, 0.5);
         }
 
-        /* Raid Bot View */
+        /* Raid Page */
         #raid-view { display: none; padding: 40px 20px; }
-
+        
         .split-container {
             display: flex;
             justify-content: center;
@@ -124,49 +124,34 @@
         .card {
             flex: 1;
             min-width: 320px;
-            min-height: 400px;
             padding: 40px;
-            border-radius: 20px;
-            background: rgba(0, 0, 0, 0.6);
+            border-radius: 25px;
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(15px);
         }
 
         .free-card { border: 2px solid; border-image: var(--rainbow) 1; }
-        .free-title { 
-            font-size: 2rem; 
-            background: var(--rainbow); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            font-weight: 900; 
-            margin-bottom: 25px; 
-        }
+        .free-title { font-size: 2rem; background: var(--rainbow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; margin-bottom: 20px; }
 
-        .prem-card { border: 2px solid var(--gold); box-shadow: 0 0 40px rgba(255, 204, 0, 0.2); }
-        .prem-title { font-size: 2rem; color: var(--gold); text-shadow: 0 0 15px var(--diamond); text-align: right; font-weight: 900; }
+        .prem-card { border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(255, 204, 0, 0.3); }
+        .prem-title { font-size: 2rem; color: var(--gold); text-align: right; font-weight: 900; }
 
         ul { list-style: none; padding: 0; }
-        li { padding: 12px 0; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        li { padding: 12px 0; font-size: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
         .btn {
-            background: var(--purple-glow);
+            background: var(--purple);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 5px;
+            padding: 15px 40px;
+            border-radius: 8px;
             cursor: pointer;
             font-family: 'Orbitron';
+            font-weight: bold;
             margin-top: 20px;
         }
 
-        .back-btn { background: none; border: 1px solid var(--purple-glow); color: var(--purple-glow); padding: 10px 20px; cursor: pointer; margin-bottom: 30px; font-family: 'Orbitron'; }
-
-        #mute-btn {
-            position: fixed; bottom: 20px; right: 20px;
-            background: rgba(122, 34, 255, 0.2);
-            border: 1px solid var(--purple-glow);
-            color: white; padding: 10px; border-radius: 50%;
-            cursor: pointer; z-index: 10000; display: none;
-        }
+        .back-btn { background: none; border: 1px solid var(--purple); color: white; padding: 10px 20px; cursor: pointer; margin-bottom: 20px; font-family: 'Orbitron'; }
     </style>
 </head>
 <body>
@@ -177,37 +162,35 @@
 
     <div class="galaxy-bg" id="galaxy"></div>
 
-    <audio id="phonk-track" loop>
-        <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Ketsa/Night_Walk/Ketsa_-_04_-_Night_Walk.mp3" type="audio/mpeg">
+    <audio id="audio-track" loop>
+        <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_5c1ba38598.mp3" type="audio/mpeg">
     </audio>
-
-    <button id="mute-btn" onclick="toggleMute()">🔊</button>
 
     <div id="main-content">
         <div id="hub-view">
             <h1 class="main-title">SPARX TOOLS</h1>
             <div class="grid">
                 <div class="galaxy-box">
-                    <h2>FREE MEMBERS</h2>
-                    <p>Automated OAuth2 adding.</p>
+                    <h2>MEMBERS</h2>
+                    <p>Automated adding.</p>
                     <button class="btn">VIEW</button>
                 </div>
                 <div class="galaxy-box" onclick="showRaid()">
                     <h2>RAID BOT</h2>
-                    <p>Advanced raid terminal.</p>
+                    <p>Advanced terminal.</p>
                     <button class="btn">VIEW</button>
                 </div>
                 <div class="galaxy-box">
                     <h2>NUKE BOT</h2>
-                    <p>Complete server wipe.</p>
+                    <p>Server wipe tool.</p>
                     <button class="btn">VIEW</button>
                 </div>
             </div>
         </div>
 
         <div id="raid-view">
-            <button class="back-btn" onclick="showHub()">← BACK TO HUB</button>
-            <h1 style="text-align: center; letter-spacing: 10px;">RAID TERMINAL</h1>
+            <button class="back-btn" onclick="showHub()">← BACK</button>
+            <h1 style="text-align: center; letter-spacing: 8px;">RAID TERMINAL</h1>
             <div class="split-container">
                 <div class="card free-card">
                     <div class="free-title">Free Features</div>
@@ -229,32 +212,26 @@
     </div>
 
     <script>
-        const audio = document.getElementById('phonk-track');
-        const muteBtn = document.getElementById('mute-btn');
-
         function startApp() {
             document.getElementById('splash').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
-            muteBtn.style.display = 'block';
-            audio.play().catch(e => console.log("Audio failed"));
+            const audio = document.getElementById('audio-track');
+            audio.volume = 0.4;
+            audio.play().catch(e => console.log("Audio Error:", e));
         }
 
-        function toggleMute() {
-            audio.muted = !audio.muted;
-            muteBtn.innerHTML = audio.muted ? "🔈" : "🔊";
-        }
-
-        // Generate Stars
+        // Better Galaxy Animation
         const galaxy = document.getElementById('galaxy');
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 80; i++) {
             const star = document.createElement('div');
-            star.className = 'stars';
-            const size = Math.random() * 3 + 'px';
+            star.className = 'star';
+            const size = Math.random() * 3 + 1 + 'px';
             star.style.width = size;
             star.style.height = size;
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
-            star.style.animationDelay = Math.random() * 40 + 's';
+            star.style.animationDuration = (Math.random() * 20 + 10) + 's';
+            star.style.animationDelay = (Math.random() * 10) + 's';
             galaxy.appendChild(star);
         }
 

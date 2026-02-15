@@ -6,8 +6,8 @@
     <title>SPARX TOOLS</title>
     <style>
         :root {
-            --bg: #050508;
-            --primary: #a855f7;
+            --bg: #05010a;
+            --purple-glow: #7a22ff;
             --gold: #ffcc00;
             --diamond: #b9f2ff;
             --rainbow: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
@@ -17,199 +17,221 @@
             margin: 0;
             background: var(--bg);
             color: white;
-            font-family: 'Segoe UI', sans-serif;
-            background-image: radial-gradient(circle at center, #111 0%, #050508 100%);
+            font-family: 'Orbitron', sans-serif;
+            overflow-x: hidden;
             min-height: 100vh;
         }
 
-        .stars {
+        /* --- MOVING GALAXY BACKGROUND --- */
+        .galaxy-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
             z-index: -1;
-            opacity: 0.4;
+            background: radial-gradient(circle at center, #1a0b2e 0%, #05010a 100%);
         }
 
-        /* --- HUB STYLES --- */
+        .stars {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: moveStars 50s linear infinite;
+        }
+
+        @keyframes moveStars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1000px); }
+        }
+
+        /* --- HUB VIEW --- */
         #hub-view {
-            padding: 50px 20px;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 80px 20px;
         }
 
-        .hub-title {
-            font-size: 4rem;
-            letter-spacing: 10px;
-            margin-bottom: 50px;
-            background: linear-gradient(#fff, #666);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .main-title {
+            font-size: 3.5rem;
+            letter-spacing: 12px;
+            color: #fff;
+            text-shadow: 0 0 20px var(--purple-glow);
+            margin-bottom: 60px;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            width: 100%;
             max-width: 1100px;
-            margin: 0 auto;
         }
 
         .galaxy-box {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
+            background: rgba(122, 34, 255, 0.05);
+            border: 1px solid rgba(122, 34, 255, 0.2);
             padding: 40px;
+            border-radius: 15px;
+            text-align: center;
             backdrop-filter: blur(10px);
-            transition: 0.4s;
+            transition: 0.3s;
             cursor: pointer;
         }
 
         .galaxy-box:hover {
-            border-color: var(--primary);
-            transform: translateY(-10px);
-            box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+            transform: scale(1.05);
+            border-color: var(--purple-glow);
+            box-shadow: 0 0 30px rgba(122, 34, 255, 0.4);
         }
 
-        /* --- RAID PAGE STYLES --- */
+        /* --- RAID VIEW --- */
         #raid-view {
-            display: none; /* Hidden by default */
-            padding: 40px 20px;
+            display: none;
+            padding: 60px 20px;
         }
 
         .split-container {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
             max-width: 1200px;
             margin: 40px auto;
-            flex-wrap: wrap;
         }
 
-        .feature-card {
+        .card {
             flex: 1;
-            min-width: 320px;
-            padding: 30px;
-            border-radius: 15px;
-            background: rgba(0,0,0,0.4);
+            min-height: 400px;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(15px);
         }
 
+        /* Free Side */
         .free-card {
             border: 2px solid;
             border-image: var(--rainbow) 1;
         }
 
-        .prem-card {
-            border: 2px solid var(--gold);
-            box-shadow: 0 0 40px rgba(255, 204, 0, 0.15), inset 0 0 20px rgba(185, 242, 255, 0.05);
-        }
-
-        .rainbow-text {
+        .free-title {
+            font-size: 2.2rem;
             background: var(--rainbow);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 2rem;
-            font-weight: bold;
+            font-weight: 900;
+            margin-bottom: 30px;
         }
 
-        .gold-text {
+        /* Premium Side */
+        .prem-card {
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 40px rgba(255, 204, 0, 0.2);
+        }
+
+        .prem-title {
+            font-size: 2.2rem;
             color: var(--gold);
-            text-shadow: 0 0 10px var(--diamond);
-            font-size: 2rem;
-            font-weight: bold;
+            text-shadow: 0 0 15px var(--diamond);
             text-align: right;
+            font-weight: 900;
         }
 
-        ul { list-style: none; padding: 0; margin-top: 20px; }
-        li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        ul { list-style: none; padding: 0; }
+        li { padding: 12px 0; font-size: 1.2rem; color: #eee; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        .btn {
+            background: var(--purple-glow);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron';
+            margin-top: 20px;
+        }
 
         .back-btn {
             background: none;
-            border: 1px solid #555;
-            color: #888;
-            padding: 8px 20px;
+            border: 1px solid var(--purple-glow);
+            color: var(--purple-glow);
+            padding: 10px 20px;
             cursor: pointer;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .back-btn:hover { color: #fff; border-color: #fff; }
-
-        .view-btn {
-            margin-top: 20px;
-            padding: 10px 30px;
-            background: #fff;
-            color: #000;
-            border: none;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
+            margin-bottom: 30px;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="stars"></div>
+    <div class="galaxy-bg" id="galaxy"></div>
 
     <div id="hub-view">
-        <h1 class="hub-title">SPARX TOOLS</h1>
+        <h1 class="main-title">SPARX TOOLS</h1>
         <div class="grid">
             <div class="galaxy-box">
-                <h2>👥 Free Members</h2>
-                <p>Automated OAuth2 Member Adding</p>
-                <button class="view-btn">View</button>
+                <h2>FREE MEMBERS</h2>
+                <p>Add OAuth2 members to any server.</p>
+                <button class="btn">VIEW</button>
             </div>
             <div class="galaxy-box" onclick="showRaid()">
-                <h2>👾 Raid Bot</h2>
-                <p>Advanced Tools & Spam Engines</p>
-                <button class="view-btn">View</button>
+                <h2>RAID BOT</h2>
+                <p>Advanced raid and spam utility.</p>
+                <button class="btn">VIEW</button>
             </div>
             <div class="galaxy-box">
-                <h2>☢️ Nuke Bot</h2>
-                <p>Complete Server Sanitization</p>
-                <button class="view-btn">View</button>
+                <h2>NUKE BOT</h2>
+                <p>The ultimate server sanitization tool.</p>
+                <button class="btn">VIEW</button>
             </div>
         </div>
     </div>
 
     <div id="raid-view">
-        <button class="back-btn" onclick="showHub()">← Back to Hub</button>
-        <h1 style="text-align: center; letter-spacing: 5px;">RAID TERMINAL</h1>
-        
-        <div class="split-container">
-            <div class="feature-card free-card">
-                <div class="rainbow-text">Free Features</div>
-                <ul>
-                    <li>▹ A-raid</li>
-                    <li>▹ Anonymous DM (anon dm)</li>
-                    <li>▹ Avatar</li>
-                    <li>▹ B-spam (Different Styles)</li>
-                    <li>▹ Blame</li>
-                    <li>▹ IP (Fake)</li>
-                    <li>▹ Hack (Fake)</li>
-                </ul>
-            </div>
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <button class="back-btn" onclick="showHub()">← BACK TO HUB</button>
+            <h1 style="text-align: center; letter-spacing: 10px; text-shadow: 0 0 20px var(--purple-glow);">RAID TERMINAL</h1>
+            
+            <div class="split-container">
+                <div class="card free-card">
+                    <div class="free-title">Free Features</div>
+                    <ul>
+                        <li>A-raid</li>
+                        <li>Anonymous DM anon dm</li>
+                        <li>Avatar</li>
+                        <li>B-spam different styles</li>
+                        <li>Blame</li>
+                        <li>Ip fake</li>
+                        <li>Hack fake</li>
+                    </ul>
+                </div>
 
-            <div class="feature-card prem-card">
-                <div class="gold-text">Premium Features</div>
-                <ul style="text-align: right;">
-                    <li>💎 24/7 Hosting</li>
-                    <li>💎 Mass Webhook Deletion</li>
-                    <li>💎 Automated Role Spam</li>
-                    <li>💎 Hidden Channel Raider</li>
-                    <li>💎 Proxy Rotation</li>
-                    <li>💎 Custom Status</li>
-                </ul>
+                <div class="card prem-card">
+                    <div class="prem-title">Premium Features</div>
+                    </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Star generation
+        const galaxy = document.getElementById('galaxy');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'stars';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 50 + 's';
+            galaxy.appendChild(star);
+        }
+
         function showRaid() {
             document.getElementById('hub-view').style.display = 'none';
             document.getElementById('raid-view').style.display = 'block';
         }
 
         function showHub() {
-            document.getElementById('hub-view').style.display = 'block';
+            document.getElementById('hub-view').style.display = 'flex';
             document.getElementById('raid-view').style.display = 'none';
         }
     </script>

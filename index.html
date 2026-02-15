@@ -15,26 +15,39 @@
             overflow: hidden;
         }
 
-        /* --- THE GALAXY (INSTANT RENDER) --- */
-        #galaxy {
+        /* --- PERMANENT GALAXY CSS --- */
+        .galaxy-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1a0b2e 0%, #05010a 100%);
-            z-index: -1;
+            background: #05010a;
+            z-index: -2;
         }
 
-        .star {
+        .stars-overlay {
+            width: 2px; height: 2px;
+            background: transparent;
+            box-shadow: 10vw 10vh #fff, 20vw 50vh #fff, 30vw 20vh #fff, 40vw 80vh #fff, 50vw 40vh #fff, 60vw 10vh #fff, 70vw 90vh #fff, 80vw 30vh #fff, 90vw 70vh #fff, 25vw 25vh #7a22ff, 75vw 75vh #7a22ff, 15vw 85vh #fff, 45vw 15vh #fff;
+            animation: move-stars 150s linear infinite;
+        }
+
+        @keyframes move-stars {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-2000px); }
+        }
+
+        .nebula {
             position: absolute;
-            background: white;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(122, 34, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
             border-radius: 50%;
-            opacity: 0.8;
-            box-shadow: 0 0 10px #7a22ff;
-            animation: moveStars 25s linear infinite;
+            filter: blur(80px);
+            z-index: -1;
+            animation: drift 25s ease-in-out infinite alternate;
         }
 
-        @keyframes moveStars {
-            from { transform: translateY(110vh); }
-            to { transform: translateY(-10vh); }
+        @keyframes drift {
+            from { top: 5%; left: 5%; }
+            to { top: 40%; left: 50%; }
         }
 
         /* --- SPLASH SCREEN --- */
@@ -43,137 +56,199 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 9999;
             cursor: pointer;
         }
 
-        .enter-glow {
-            font-size: 2rem;
+        .enter-btn {
+            font-size: 1.8rem;
+            letter-spacing: 10px;
             color: #7a22ff;
             text-shadow: 0 0 20px #7a22ff;
             border: 2px solid #7a22ff;
-            padding: 20px 40px;
-            text-transform: uppercase;
-            letter-spacing: 5px;
+            padding: 25px 50px;
+            background: transparent;
+            transition: 0.3s;
         }
 
-        /* --- UI ELEMENTS --- */
-        #main-ui { display: none; text-align: center; padding-top: 50px; }
+        .enter-btn:hover {
+            background: #7a22ff;
+            color: white;
+            box-shadow: 0 0 40px #7a22ff;
+        }
+
+        /* --- NEW HUB UI --- */
+        #main-ui { display: none; text-align: center; height: 100vh; overflow-y: auto; }
         
-        .title-glow {
-            font-size: 3.5rem;
-            letter-spacing: 10px;
+        .main-title {
+            font-size: 4rem;
+            letter-spacing: 15px;
             text-shadow: 0 0 30px #7a22ff;
-            margin-bottom: 40px;
+            margin-top: 60px;
+            margin-bottom: 50px;
         }
 
         .grid {
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 30px;
             flex-wrap: wrap;
-            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 50px;
         }
 
-        .cool-box {
-            background: rgba(122, 34, 255, 0.15);
-            border: 2px solid #7a22ff;
+        .box {
+            background: rgba(122, 34, 255, 0.05);
+            border: 1px solid rgba(122, 34, 255, 0.3);
+            padding: 45px 30px;
             border-radius: 20px;
-            padding: 40px;
-            width: 280px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 0 20px rgba(122, 34, 255, 0.3);
+            width: 300px;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box:hover {
+            transform: translateY(-15px);
+            border-color: #7a22ff;
+            box-shadow: 0 0 50px rgba(122, 34, 255, 0.4);
+            background: rgba(122, 34, 255, 0.12);
+        }
+
+        .box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+        }
+
+        .box p {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .view-btn-ui {
+            background: transparent;
+            border: 1px solid #7a22ff;
+            color: white;
+            padding: 10px 30px;
+            font-family: 'Orbitron';
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
             transition: 0.3s;
         }
 
-        .cool-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 40px #7a22ff;
-            background: rgba(122, 34, 255, 0.25);
-        }
-
-        .btn-view {
+        .box:hover .view-btn-ui {
             background: #7a22ff;
-            color: white;
-            border: none;
-            padding: 10px 30px;
-            margin-top: 20px;
-            font-family: 'Orbitron';
-            cursor: pointer;
-            border-radius: 5px;
-            box-shadow: 0 0 10px #7a22ff;
+            box-shadow: 0 0 15px #7a22ff;
         }
 
         /* --- RAID VIEW --- */
-        #raid-view { display: none; padding: 20px; }
-        .feature-container { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
-        .card { 
-            background: rgba(0,0,0,0.8); 
-            padding: 30px; 
-            border-radius: 20px; 
-            width: 350px; 
-            text-align: left;
-        }
+        #raid-view { display: none; margin-top: 40px; padding-bottom: 50px;}
         
+        .raid-title { font-size: 2.5rem; letter-spacing: 10px; margin-bottom: 30px; }
+
+        .card { 
+            background: rgba(0,0,0,0.85); 
+            padding: 40px; 
+            border-radius: 20px; 
+            width: 400px; 
+            backdrop-filter: blur(10px);
+        }
+
         .rainbow-text {
             background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 1.8rem;
             font-weight: 900;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: block;
         }
 
-        .gold-text {
-            color: #ffcc00;
-            text-shadow: 0 0 15px #ffcc00;
-            font-size: 1.8rem;
+        .gold-text { 
+            color: #ffcc00; 
+            text-shadow: 0 0 15px #ffcc00; 
+            font-weight: 900; 
+            font-size: 2rem;
             text-align: right;
+            display: block;
         }
+        
+        ul { list-style: none; padding: 0; margin-top: 20px; }
+        li { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 1.1rem; text-align: left; }
+
+        .back-nav {
+            background: none;
+            border: 1px solid #7a22ff;
+            color: #7a22ff;
+            padding: 10px 25px;
+            cursor: pointer;
+            font-family: 'Orbitron';
+            margin-bottom: 30px;
+            transition: 0.3s;
+        }
+
+        .back-nav:hover { background: #7a22ff; color: white; }
     </style>
 </head>
 <body>
 
-    <div id="splash" onclick="enterSite()">
-        <div class="enter-glow">🚀 CLICK TO ENTER 🚀</div>
+    <div id="splash" onclick="unlock()">
+        <div class="enter-btn">ENTER HUB</div>
+        <p style="color: #555; margin-top: 25px; letter-spacing: 2px;">BY SPARX TOOLS</p>
     </div>
 
-    <div id="galaxy"></div>
+    <div class="galaxy-bg">
+        <div class="stars-overlay"></div>
+        <div class="nebula"></div>
+    </div>
 
     <audio id="phonk" loop>
         <source src="https://cdn.pixabay.com/audio/2023/05/08/audio_6e665d9d73.mp3" type="audio/mpeg">
     </audio>
 
     <div id="main-ui">
-        <h1 class="title-glow">SPARX TOOLS</h1>
-
+        <h1 class="main-title">SPARX TOOLS</h1>
+        
         <div id="hub">
             <div class="grid">
-                <div class="cool-box">
-                    <h2>👥 MEMBERS</h2>
-                    <p>Automated adding.</p>
-                    <button class="btn-view">VIEW 👀</button>
+                <div class="box">
+                    <h3>MEMBERS</h3>
+                    <p>Automated OAuth2 high-speed member adding system.</p>
+                    <button class="view-btn-ui" onclick="alert('Module Locked')">VIEW</button>
                 </div>
-                <div class="cool-box" onclick="showRaid()">
-                    <h2>👾 RAID BOT</h2>
-                    <p>Advanced terminal.</p>
-                    <button class="btn-view">VIEW 👀</button>
+                
+                <div class="box" onclick="showRaid()">
+                    <h3>RAID BOT</h3>
+                    <p>The ultimate terminal for server raids and utility tools.</p>
+                    <button class="view-btn-ui">VIEW</button>
                 </div>
-                <div class="cool-box">
-                    <h2>☢️ NUKE BOT</h2>
-                    <p>Server wipe tool.</p>
-                    <button class="btn-view">VIEW 👀</button>
+                
+                <div class="box">
+                    <h3>NUKE BOT</h3>
+                    <p>Complete server sanitization and destruction modules.</p>
+                    <button class="view-btn-ui" onclick="alert('Module Locked')">VIEW</button>
                 </div>
             </div>
         </div>
 
         <div id="raid-view">
-            <button onclick="showHub()" class="btn-view" style="background:none; border: 1px solid #7a22ff;">← BACK</button>
-            <div class="feature-container">
+            <button class="back-nav" onclick="showHub()">← BACK TO HUB</button>
+            <h1 class="raid-title">RAID TERMINAL</h1>
+            
+            <div class="grid">
                 <div class="card" style="border: 2px solid red;">
-                    <div class="rainbow-text">FREE FEATURES</div>
-                    <ul style="list-style: '▹ '; padding-left: 20px; line-height: 2;">
+                    <span class="rainbow-text">FREE FEATURES</span>
+                    <ul>
                         <li>A-raid</li>
                         <li>Anonymous DM anon dm</li>
                         <li>Avatar</li>
@@ -183,46 +258,39 @@
                         <li>Hack</li>
                     </ul>
                 </div>
-                <div class="card" style="border: 2px solid #ffcc00;">
-                    <div class="gold-text">PREMIUM</div>
-                    <p style="text-align: right; color: #444; margin-top: 50px;">LOCKED 🔒</p>
+                
+                <div class="card" style="border: 2px solid #ffcc00; box-shadow: 0 0 30px rgba(255,204,0,0.2);">
+                    <span class="gold-text">PREMIUM</span>
+                    <p style="color: #444; margin-top: 100px; text-align: right;">[ DATA ENCRYPTED ]</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function enterSite() {
+        function unlock() {
             document.getElementById('splash').style.display = 'none';
             document.getElementById('main-ui').style.display = 'block';
+            
             const music = document.getElementById('phonk');
-            music.volume = 0.5;
-            music.play();
-        }
-
-        // PERMANENT GALAXY GENERATOR
-        const galaxy = document.getElementById('galaxy');
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 3 + 'px';
-            star.style.width = size;
-            star.style.height = size;
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.animationDuration = (Math.random() * 15 + 10) + 's';
-            star.style.animationDelay = (Math.random() * 10) + 's';
-            galaxy.appendChild(star);
+            music.volume = 0.4;
+            
+            let playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => { console.log("Audio Error") });
+            }
         }
 
         function showRaid() {
             document.getElementById('hub').style.display = 'none';
             document.getElementById('raid-view').style.display = 'block';
+            window.scrollTo(0,0);
         }
 
         function showHub() {
             document.getElementById('hub').style.display = 'block';
             document.getElementById('raid-view').style.display = 'none';
+            window.scrollTo(0,0);
         }
     </script>
 </body>

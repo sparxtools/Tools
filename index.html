@@ -3,107 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxy Services</title>
+    <title>SPARX TOOLS</title>
     <style>
         :root {
-            --primary-glow: #a855f7;
-            --secondary-glow: #3b82f6;
-            --bg-dark: #0a0a0c;
+            --bg: #050508;
+            --primary: #a855f7;
+            --gold: #ffcc00;
+            --diamond: #b9f2ff;
+            --rainbow: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
         }
 
         body {
             margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
-            background-image: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0c 100%);
+            background: var(--bg);
             color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            background-image: radial-gradient(circle at center, #111 0%, #050508 100%);
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* Animated Stars Background */
         .stars {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
             z-index: -1;
-            background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123161/stars.png') repeat;
+            opacity: 0.4;
         }
 
-        header {
-            margin-top: 50px;
+        /* --- HUB STYLES --- */
+        #hub-view {
+            padding: 50px 20px;
             text-align: center;
         }
 
-        h1 {
-            font-size: 3rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            text-shadow: 0 0 20px var(--primary-glow);
+        .hub-title {
+            font-size: 4rem;
+            letter-spacing: 10px;
+            margin-bottom: 50px;
+            background: linear-gradient(#fff, #666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .container {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            width: 90%;
-            max-width: 1200px;
-            margin-top: 50px;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
-        /* Galaxy Boxes */
-        .box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+        .galaxy-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
             padding: 40px;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: 0.4s;
+            cursor: pointer;
         }
 
-        .box:hover {
+        .galaxy-box:hover {
+            border-color: var(--primary);
             transform: translateY(-10px);
-            border-color: var(--primary-glow);
-            box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
         }
 
-        .box i {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            display: block;
+        /* --- RAID PAGE STYLES --- */
+        #raid-view {
+            display: none; /* Hidden by default */
+            padding: 40px 20px;
         }
 
-        .box h2 {
-            margin: 10px 0;
-            font-size: 1.5rem;
+        .split-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+            flex-wrap: wrap;
         }
 
-        .box p {
-            color: #ccc;
-            font-size: 0.9rem;
-            line-height: 1.6;
+        .feature-card {
+            flex: 1;
+            min-width: 320px;
+            padding: 30px;
+            border-radius: 15px;
+            background: rgba(0,0,0,0.4);
         }
 
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 25px;
-            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
+        .free-card {
+            border: 2px solid;
+            border-image: var(--rainbow) 1;
+        }
+
+        .prem-card {
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 40px rgba(255, 204, 0, 0.15), inset 0 0 20px rgba(185, 242, 255, 0.05);
+        }
+
+        .rainbow-text {
+            background: var(--rainbow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2rem;
             font-weight: bold;
-            transition: opacity 0.3s;
         }
 
-        .btn:hover {
-            opacity: 0.8;
+        .gold-text {
+            color: var(--gold);
+            text-shadow: 0 0 10px var(--diamond);
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        ul { list-style: none; padding: 0; margin-top: 20px; }
+        li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        .back-btn {
+            background: none;
+            border: 1px solid #555;
+            color: #888;
+            padding: 8px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover { color: #fff; border-color: #fff; }
+
+        .view-btn {
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: #fff;
+            color: #000;
+            border: none;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -111,33 +149,69 @@
 
     <div class="stars"></div>
 
-    <header>
-        <h1>GALAXY TERMINAL</h1>
-        <p>Command the cosmos with our powerful bots.</p>
-    </header>
-
-    <div class="container">
-        <div class="box">
-            <i>🚀</i>
-            <h2>Free Members Bot</h2>
-            <p>Boost your server population instantly using our OAuth2 automation system.</p>
-            <a href="#" class="btn">Deploy</a>
-        </div>
-
-        <div class="box">
-            <i>☢️</i>
-            <h2>Nuke Bot</h2>
-            <p>Complete server sanitization and structure reset with high-speed execution.</p>
-            <a href="#" class="btn">Execute</a>
-        </div>
-
-        <div class="box">
-            <i>👾</i>
-            <h2>Raid Bot</h2>
-            <p>Advanced stress-testing and automated interaction tools for large-scale management.</p>
-            <a href="#" class="btn">Launch</a>
+    <div id="hub-view">
+        <h1 class="hub-title">SPARX TOOLS</h1>
+        <div class="grid">
+            <div class="galaxy-box">
+                <h2>👥 Free Members</h2>
+                <p>Automated OAuth2 Member Adding</p>
+                <button class="view-btn">View</button>
+            </div>
+            <div class="galaxy-box" onclick="showRaid()">
+                <h2>👾 Raid Bot</h2>
+                <p>Advanced Tools & Spam Engines</p>
+                <button class="view-btn">View</button>
+            </div>
+            <div class="galaxy-box">
+                <h2>☢️ Nuke Bot</h2>
+                <p>Complete Server Sanitization</p>
+                <button class="view-btn">View</button>
+            </div>
         </div>
     </div>
 
+    <div id="raid-view">
+        <button class="back-btn" onclick="showHub()">← Back to Hub</button>
+        <h1 style="text-align: center; letter-spacing: 5px;">RAID TERMINAL</h1>
+        
+        <div class="split-container">
+            <div class="feature-card free-card">
+                <div class="rainbow-text">Free Features</div>
+                <ul>
+                    <li>▹ A-raid</li>
+                    <li>▹ Anonymous DM (anon dm)</li>
+                    <li>▹ Avatar</li>
+                    <li>▹ B-spam (Different Styles)</li>
+                    <li>▹ Blame</li>
+                    <li>▹ IP (Fake)</li>
+                    <li>▹ Hack (Fake)</li>
+                </ul>
+            </div>
+
+            <div class="feature-card prem-card">
+                <div class="gold-text">Premium Features</div>
+                <ul style="text-align: right;">
+                    <li>💎 24/7 Hosting</li>
+                    <li>💎 Mass Webhook Deletion</li>
+                    <li>💎 Automated Role Spam</li>
+                    <li>💎 Hidden Channel Raider</li>
+                    <li>💎 Proxy Rotation</li>
+                    <li>💎 Custom Status</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showRaid() {
+            document.getElementById('hub-view').style.display = 'none';
+            document.getElementById('raid-view').style.display = 'block';
+        }
+
+        function showHub() {
+            document.getElementById('hub-view').style.display = 'block';
+            document.getElementById('raid-view').style.display = 'none';
+        }
+    </script>
 </body>
 </html>

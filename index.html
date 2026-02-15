@@ -8,48 +8,79 @@
     <style>
         body, html {
             margin: 0; padding: 0;
-            background-color: #05010a;
+            background-color: #0a0015;
             color: white;
             font-family: 'Orbitron', sans-serif;
             height: 100vh;
             overflow: hidden;
         }
 
-        /* --- PERMANENT GALAXY CSS (NO IMAGES NEEDED) --- */
+        /* --- ENHANCED GALAXY BACKGROUND --- */
         .galaxy-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #05010a;
-            z-index: -2;
+            background: radial-gradient(ellipse at bottom, #1b0033 0%, #05010a 100%);
+            z-index: -3;
         }
 
-        /* Creating stars using pure CSS box-shadows */
+        /* More stars with different sizes & colors */
         .stars-overlay {
-            width: 1px; height: 1px;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 200%;
             background: transparent;
-            box-shadow: 10vw 10vh #fff, 20vw 50vh #fff, 30vw 20vh #fff, 40vw 80vh #fff, 50vw 40vh #fff, 60vw 10vh #fff, 70vw 90vh #fff, 80vw 30vh #fff, 90vw 70vh #fff, 25vw 25vh #7a22ff, 75vw 75vh #7a22ff;
-            animation: move-stars 100s linear infinite;
+            box-shadow: 
+                15vw 15vh #fff 1px, 25vw 35vh #fff 1px, 35vw 25vh #e0d0ff 1px,
+                45vw 75vh #fff 2px, 55vw 45vh #c8aaff 1px, 65vw 15vh #fff 1px,
+                75vw 85vh #a050ff 2px, 85vw 35vh #fff 1px, 95vw 65vh #7a22ff 1px,
+                10vw 80vh #ff99ff 1px, 30vw 60vh #b266ff 2px, 50vw 90vh #9933ff 1px;
+            animation: drift-stars 120s linear infinite;
+            opacity: 0.9;
         }
 
-        @keyframes move-stars {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-2000px); }
+        @keyframes drift-stars {
+            from { transform: translateY(0); }
+            to   { transform: translateY(-50%); }
         }
 
-        /* Purple Nebula Glow */
+        /* Multiple drifting nebulae */
         .nebula {
             position: absolute;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(122, 34, 255, 0.2) 0%, rgba(0,0,0,0) 70%);
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(122, 34, 255, 0.25) 10%, rgba(80, 0, 200, 0.15) 40%, transparent 70%);
             border-radius: 50%;
-            filter: blur(50px);
-            z-index: -1;
-            animation: drift 20s ease-in-out infinite alternate;
+            filter: blur(80px);
+            z-index: -2;
+            animation: nebula-drift 40s ease-in-out infinite alternate;
         }
 
-        @keyframes drift {
-            from { top: 10%; left: 10%; }
-            to { top: 50%; left: 60%; }
+        .nebula:nth-child(2) {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(200, 80, 255, 0.2) 0%, transparent 70%);
+            animation: nebula-drift 60s ease-in-out infinite alternate-reverse;
+            top: 40%; left: 70%;
+        }
+
+        @keyframes nebula-drift {
+            0%   { transform: translate(0, 0) rotate(0deg); opacity: 0.6; }
+            100% { transform: translate(30vw, 20vh) rotate(15deg); opacity: 0.9; }
+        }
+
+        /* Shooting star effect */
+        .shooting-star {
+            position: absolute;
+            width: 3px; height: 60px;
+            background: linear-gradient(to bottom, transparent, #ffccff, #ffffff);
+            border-radius: 50%;
+            filter: blur(2px);
+            animation: shoot 8s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes shoot {
+            0%   { transform: translateX(-10vw) translateY(-10vh) rotate(45deg); opacity: 0; }
+            10%  { opacity: 0.9; }
+            90%  { opacity: 0.9; }
+            100% { transform: translateX(110vw) translateY(110vh) rotate(45deg); opacity: 0; }
         }
 
         /* --- SPLASH SCREEN --- */
@@ -66,48 +97,87 @@
         }
 
         .enter-btn {
-            font-size: 1.5rem;
-            letter-spacing: 5px;
-            color: #7a22ff;
-            text-shadow: 0 0 15px #7a22ff;
-            border: 2px solid #7a22ff;
-            padding: 20px 40px;
+            font-size: 2rem;
+            letter-spacing: 8px;
+            color: #9d4fff;
+            text-shadow: 0 0 25px #9d4fff, 0 0 40px #7a22ff;
+            border: 3px solid #9d4fff;
+            padding: 25px 60px;
             background: transparent;
+            border-radius: 12px;
+            transition: all 0.4s;
+        }
+
+        .enter-btn:hover {
+            box-shadow: 0 0 40px #9d4fff;
+            transform: scale(1.08);
         }
 
         /* --- MAIN UI --- */
-        #main-ui { display: none; text-align: center; padding-top: 10vh; }
-        .grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 50px; }
+        #main-ui { display: none; text-align: center; padding-top: 8vh; }
+        .grid { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 60px; }
         .box {
-            background: rgba(122, 34, 255, 0.1);
-            border: 1px solid #7a22ff;
-            padding: 30px; border-radius: 15px; width: 250px;
-            backdrop-filter: blur(10px);
+            background: rgba(122, 34, 255, 0.12);
+            border: 2px solid #9d4fff;
+            padding: 35px; border-radius: 20px; width: 280px;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(157, 79, 255, 0.5);
         }
 
         .rainbow-text {
-            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            background: linear-gradient(90deg, #ff0066, #ffcc00, #33ff99, #00ccff, #9933ff, #ff3399);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: bold;
+            font-weight: 900;
+            font-size: 1.4rem;
         }
 
-        .gold-text { color: #ffcc00; text-shadow: 0 0 10px #ffcc00; font-weight: bold; }
+        .gold-text { 
+            color: #ffd700; 
+            text-shadow: 0 0 15px #ffd700, 0 0 25px #ffaa00; 
+            font-weight: bold; 
+            font-size: 1.4rem;
+        }
         
-        #raid-view { display: none; margin-top: 20px; }
-        .card { background: rgba(0,0,0,0.8); padding: 20px; border-radius: 15px; width: 350px; border: 1px solid #333; }
+        #raid-view { display: none; margin-top: 30px; }
+        .card { 
+            background: rgba(10, 5, 30, 0.85); 
+            padding: 25px; 
+            border-radius: 18px; 
+            width: 380px; 
+            border: 2px solid; 
+            backdrop-filter: blur(8px);
+        }
+
+        .highlight-note {
+            color: #aaffff;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ffff;
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
 
     <div id="splash" onclick="unlock()">
         <div class="enter-btn">CLICK TO ENTER</div>
-        <p style="color: #444; margin-top: 20px;">[ Sound and Galaxy will load ]</p>
+        <p style="color: #555; margin-top: 25px; font-size: 1.2rem;">[ Cosmic Audio & Galaxy Awakening ]</p>
     </div>
 
     <div class="galaxy-bg">
         <div class="stars-overlay"></div>
         <div class="nebula"></div>
+        <div class="nebula"></div>
+        <div class="shooting-star" style="top:10%; left:-5%; animation-delay:0s;"></div>
+        <div class="shooting-star" style="top:30%; left:-10%; animation-delay:3s;"></div>
+        <div class="shooting-star" style="top:60%; left:-8%; animation-delay:6s;"></div>
     </div>
 
     <audio id="phonk" loop>
@@ -115,7 +185,7 @@
     </audio>
 
     <div id="main-ui">
-        <h1 style="letter-spacing: 15px; text-shadow: 0 0 20px #7a22ff;">SPARX TOOLS</h1>
+        <h1 style="letter-spacing: 18px; text-shadow: 0 0 30px #9d4fff, 0 0 50px #7a22ff;">SPARX TOOLS</h1>
         
         <div id="hub">
             <div class="grid">
@@ -126,23 +196,27 @@
         </div>
 
         <div id="raid-view">
-            <button onclick="showHub()" style="background:none; color:white; border:1px solid #7a22ff; padding:10px; cursor:pointer; margin-bottom: 20px;">BACK TO HUB</button>
+            <button onclick="showHub()" style="background:none; color:#aaffff; border:2px solid #9d4fff; padding:12px 30px; cursor:pointer; margin-bottom: 30px; border-radius:10px; font-size:1.1rem; text-shadow:0 0 10px #00ffff;">← BACK TO HUB</button>
+            
             <div class="grid">
-                <div class="card" style="border-color: red;">
-                    <div class="rainbow-text">FREE FEATURES</div>
-                    <ul style="text-align: left; list-style: none;">
-                        <li>A-raid</li>
-                        <li>Anonymous DM anon dm</li>
-                        <li>Avatar</li>
-                        <li>B-spam</li>
-                        <li>Blame</li>
-                        <li>Ip</li>
-                        <li>Hack</li>
+                <div class="card" style="border-color: #ff3366;">
+                    <div class="rainbow-text">RAID BOT</div>
+                    <div class="highlight-note">Bot doesn't have to be in server!<br>Just add it to your apps!!</div>
+                    <ul style="text-align: left; list-style: none; padding-left: 0; line-height: 2;">
+                        <li>→ A-raid</li>
+                        <li>→ Anonymous DM / anon dm</li>
+                        <li>→ Avatar</li>
+                        <li>→ B-spam</li>
+                        <li>→ Blame</li>
+                        <li>→ Ip</li>
+                        <li>→ Hack</li>
                     </ul>
+                    <p style="color:#88ffdd; margin-top:20px; font-size:0.9rem;">User-installed app — works anywhere via your Discord apps!</p>
                 </div>
-                <div class="card" style="border-color: #ffcc00;">
+
+                <div class="card" style="border-color: #ffd700;">
                     <div class="gold-text">PREMIUM FEATURES</div>
-                    <p style="color: #444;">Coming Soon...</p>
+                    <p style="color: #aaa; margin-top: 30px;">Coming Soon...</p>
                 </div>
             </div>
         </div>
@@ -154,13 +228,11 @@
             document.getElementById('main-ui').style.display = 'block';
             
             const music = document.getElementById('phonk');
-            music.volume = 0.5;
-            
-            // Forces audio play on user interaction
+            music.volume = 0.4;
             let playPromise = music.play();
             if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Autoplay blocked, clicking again will fix it.");
+                playPromise.catch(() => {
+                    console.log("Autoplay needs another interaction.");
                 });
             }
         }
